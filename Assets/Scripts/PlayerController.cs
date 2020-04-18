@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
 
     Vector2 movement;
+
+    public bool canMove = true;
     // Update is called once per frame
     void Update()
     {
@@ -20,14 +22,12 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove)
+        {
+            return;
+        }
         //movement
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-    }
-    void OnCollisionStay2D(Collision2D col)
-    {
-        if (Input.GetKeyDown("space")){
-            col.gameObject.GetComponent<NPCScript>().Interact();
-        }
     }
     
 }
