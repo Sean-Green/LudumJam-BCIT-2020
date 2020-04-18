@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     void OnCollisionStay2D(Collision2D col)
     {
         if (Input.GetKeyDown("space")){
-            col.gameObject.GetComponent<Script>().Interact();
+            col.gameObject.GetComponent<NPCScript>().Interact();
         }
     }
     
