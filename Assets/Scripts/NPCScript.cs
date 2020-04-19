@@ -18,24 +18,23 @@ public class NPCScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (playerNear)
-        {
-            if (Input.GetKeyDown("space"))
-        {
-            if (!introduced){
-                textBox.EnableTextBox(intro);
-                introduced = true;
-            } else {
-                textBox.EnableTextBox(repeated);
-            }
-        }
-        }
+
     }
-    private void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerEnter2D(Collider2D other)
     {        
+        Debug.Log("entered trigger");
         if(other.gameObject.layer == 10)
         {
             playerNear = true;
         }
+    }
+    public void OnTriggerStay2D(Collider2D other)
+    {
+        Debug.Log("Within trigger");
+    }
+
+    public void OnTriggerExit2D(Collider2D other)
+    {
+        Debug.Log("Exit trigger");
     }
 }

@@ -1,0 +1,6 @@
+Hello Player, I am the prototype NPC
+Come and Speak with me.
+
+This textbox is controlled by a prototype TextBoxController.
+This line left intentionally blank.
+JK, have a nice jam
