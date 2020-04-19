@@ -24,9 +24,9 @@ public class TextBoxManager : MonoBehaviour
     public string[] textLines;
 
     // the line of text being read
-    private int currentLine;
+    public int currentLine;
     // the final line of text to be read
-    private int endAtLine;
+    public int endAtLine;
 
     // a reference to the player, so we can stop their movement.
     public PlayerController player;
@@ -38,7 +38,6 @@ public class TextBoxManager : MonoBehaviour
     {
         // get the player reference
         player = FindObjectOfType<PlayerController>();
-
         // if active, creates a text box at scene start
         if (active) {
             EnableTextBox(startText);
@@ -49,6 +48,7 @@ public class TextBoxManager : MonoBehaviour
 
     void FixedUpdate()
     {
+        
         //if not active, do nothing
         if(!active){ return; }
 
@@ -60,12 +60,13 @@ public class TextBoxManager : MonoBehaviour
         {
             currentLine++;
         }
-        
         // close the text box and reset the curent line
         if (currentLine > endAtLine){
-               DisableTextBox();
-               currentLine = 0;
+                currentLine = 0;
+                DisableTextBox();
+               
         }
+        
         
     }
 

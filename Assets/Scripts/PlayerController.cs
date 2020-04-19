@@ -19,8 +19,12 @@ public class PlayerController : MonoBehaviour
             gs = GetComponent<GridSnapper>();
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (!canMove)
+        {
+            return;
+        }
         gs.MoveObject((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
     }
 }
