@@ -7,7 +7,6 @@ public class GridSnapper : MonoBehaviour
 
     public float fMoveSpeed;
     public float fGridSize;
-    public Rigidbody2D rb;
     public LayerMask lmCollideWith;
 
     private Vector2 v2Pos;
@@ -16,17 +15,21 @@ public class GridSnapper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         v2Pos = transform.position;
         v2GoToPos = v2Pos;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MoveObject(int nMoveX, int nMoveY)
     {
-        //set the position of everything for this frame
-        int nMoveX = (int)Input.GetAxisRaw("Horizontal");
-        int nMoveY = (int)Input.GetAxisRaw("Vertical");
+        if (nMoveX > 0)
+            nMoveX /= nMoveX;
+        else if (nMoveX < 0)
+            nMoveX /= -nMoveX;
+
+        if (nMoveY > 0)
+            nMoveY /= nMoveY;
+        else if (nMoveY < 0)
+            nMoveY /= -nMoveY;
 
         if (Vector3.Distance(transform.position, v2GoToPos) <= 0.1f) {
             if (!Physics2D.OverlapCircle(v2GoToPos + new Vector2(nMoveX * fGridSize, 0), 0.2f, lmCollideWith)) {

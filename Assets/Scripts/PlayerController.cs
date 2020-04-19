@@ -8,26 +8,19 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
 
     public Rigidbody2D rb;
+    public GridSnapper gs;
 
     Vector2 movement;
 
     public bool canMove = true;
+
+    private void Start() {
+        if (gs == null)
+            gs = GetComponent<GridSnapper>();
+    }
     // Update is called once per frame
     void Update()
     {
-        //input
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        gs.MoveObject((int)Input.GetAxisRaw("Horizontal"), (int)Input.GetAxisRaw("Vertical"));
     }
-
-    void FixedUpdate()
-    {
-        if (!canMove)
-        {
-            return;
-        }
-        //movement
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-    }
-    
 }

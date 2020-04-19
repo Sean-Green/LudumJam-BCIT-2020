@@ -2507,7 +2507,7 @@ MonoBehaviour:
   lmObstacles:
     serializedVersion: 2
     m_Bits: 256
-  tmTiles: {fileID: 475163782}
+  tmTiles: {fileID: 69926920}
 --- !u!1 &1753235352
 GameObject:
   m_ObjectHideFlags: 0
@@ -2602,7 +2602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fMoveSpeed: 7.5
-  fGridSize: 1.25
+  fGridSize: 1
   rb: {fileID: 1753235357}
   lmCollideWith:
     serializedVersion: 2
