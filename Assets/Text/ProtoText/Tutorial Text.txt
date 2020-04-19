@@ -1,0 +1,3 @@
+This scene contains a TextBoxManager, if isActive is checked in the inpector the textBox will appear with a message at startup. press x now
+If you include a TextBoxTriggerOnEnter prefab, you can create 1 time textblurbs that trigger when a player enters the trigger collider.
+You can also call it by pressing x withing the trigger, if wait for button press is enabled.
