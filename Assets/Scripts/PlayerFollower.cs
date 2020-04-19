@@ -125,11 +125,12 @@ public class PlayerFollower : MonoBehaviour
 
         while (lNotTestedNodes.Count != 0) {
             //want to know if lhs < rhs for sorting order
-            lNotTestedNodes.Sort(delegate(Node rhs, Node lhs) {
-                if (lhs.fGlobalGoal < rhs.fGlobalGoal)          return 1;
-                else if (lhs.fGlobalGoal > rhs.fGlobalGoal)     return -1;
+            lNotTestedNodes.Sort(delegate (Node rhs, Node lhs) {
+                if (lhs.fGlobalGoal < rhs.fGlobalGoal) return 1;
+                else if (lhs.fGlobalGoal > rhs.fGlobalGoal) return -1;
                 return 0;
             });
+            //Debug.Log(lNotTestedNodes);
 
             //if we've visited the node at the front, pop it off
             while (lNotTestedNodes.Count != 0 && lNotTestedNodes[0].bVisited)
