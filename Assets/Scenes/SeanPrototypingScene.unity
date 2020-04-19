@@ -147,7 +147,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: -168}
+  m_AnchoredPosition: {x: 0, y: -168}
   m_SizeDelta: {x: 0.000061035, y: -362.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &22261791
@@ -589,9 +589,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21c0645708668ab42944208e6cdfafdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textBox: {fileID: 0}
-  intro: {fileID: 0}
-  repeated: {fileID: 0}
+  textBox: {fileID: 1903902439}
+  intro: {fileID: 4900000, guid: fa0f902c13dbbc64d8a8e3f072c8a557, type: 3}
+  repeated: {fileID: 4900000, guid: a1cf02167fb83ff40a614f8c58e4ebb3, type: 3}
   introduced: 0
 --- !u!1 &1247874688
 GameObject:
@@ -768,10 +768,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textBox: {fileID: 22261789}
   theText: {fileID: 527504617}
-  textFile: {fileID: 4900000, guid: fa0f902c13dbbc64d8a8e3f072c8a557, type: 3}
+  startText: {fileID: 0}
   textLines: []
-  currentLine: 0
-  endAtLine: 0
   player: {fileID: 0}
   active: 0
 --- !u!4 &1903902440

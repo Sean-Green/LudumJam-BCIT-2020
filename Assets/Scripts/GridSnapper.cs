@@ -10,6 +10,7 @@ public class GridSnapper : MonoBehaviour
     public float fMoveSpeed;
     public int nGridSize;
     public Rigidbody2D rb;
+    public LayerMask lmCollideWith;
 
     private Vector2 v2Pos;
     private Vector2 v2GoToPos;
@@ -30,11 +31,15 @@ public class GridSnapper : MonoBehaviour
         int nMoveY = (int)Input.GetAxisRaw("Vertical");
 
         if (Vector3.Distance(transform.position, v2GoToPos) <= 0.1f) {
-            if (Mathf.Abs(nMoveX) == 1) {
-                v2GoToPos += new Vector2(nMoveX * nGridSize, 0);
+            if (!Physics2D.OverlapCircle(v2GoToPos + new Vector2(nMoveX * nGridSize, 0), 0.2f, lmCollideWith)) {
+                if (Mathf.Abs(nMoveX) == 1) {
+                    v2GoToPos += new Vector2(nMoveX * nGridSize, 0);
+                }
             }
-            if (Mathf.Abs(nMoveY) == 1) {
-                v2GoToPos += new Vector2(0, nMoveY * nGridSize);
+            if (!Physics2D.OverlapCircle(v2GoToPos + new Vector2(0, nMoveY * nGridSize), 0.2f, lmCollideWith)) {
+                if (Mathf.Abs(nMoveY) == 1) {
+                    v2GoToPos += new Vector2(0, nMoveY * nGridSize);
+                }
             }
         }
 
@@ -42,8 +47,9 @@ public class GridSnapper : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawLine(v2GoToPos, transform.position);
+        Gizmos.DrawSphere(v2GoToPos, 0.2f);
     }
 
     void FixedUpdate() {
