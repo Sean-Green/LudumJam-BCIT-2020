@@ -10,7 +10,6 @@ public class PlayerFollower : MonoBehaviour
     public GameObject goPlayer;
     public LayerMask lmObstacles;
     public Tilemap tmTiles;
-    public GridSnapper gs;
     public GameObject[] goOtherFollowers;
 
     //a* solving properties
@@ -37,9 +36,6 @@ public class PlayerFollower : MonoBehaviour
 
         if (grGrid == null)
             grGrid = tmTiles.GetComponentInParent<Grid>();
-
-        if (gs == null)
-            gs = GetComponent<GridSnapper>();
 
         if (goOtherFollowers.Length == 0) {
             goOtherFollowers = GameObject.FindGameObjectsWithTag("Follower");
@@ -73,12 +69,18 @@ public class PlayerFollower : MonoBehaviour
                 if (x < nBoardWidth - 1)    arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[y * nBoardWidth + (x + 1)]);
                 if (y < nBoardHeight - 1)   arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y + 1) * nBoardWidth + x]);
 
-                //TODO for awake person: do not let connections happen on blocked corners
-                //diagonal connections
-                if (y > 0 && x > 0) arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y - 1) * nBoardWidth + (x - 1)]);
-                if (y < nBoardHeight - 1 && x > 0) arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y + 1) * nBoardWidth + (x - 1)]);
-                if (y > 0 && x < nBoardWidth - 1) arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y - 1) * nBoardWidth + (x + 1)]);
-                if (y < nBoardHeight - 1 && x < nBoardWidth - 1) arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y + 1) * nBoardWidth + (x + 1)]);
+                if (y > 0 && x > 0)
+                    if (!(arrNodes[y * nBoardWidth + (x - 1)].bObstacle || arrNodes[(y - 1) * nBoardWidth + x].bObstacle))
+                        arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y - 1) * nBoardWidth + (x - 1)]);
+                if (y < nBoardHeight - 1 && x > 0)
+                    if (!(arrNodes[y * nBoardWidth + (x - 1)].bObstacle || arrNodes[(y + 1) * nBoardWidth + x].bObstacle))
+                        arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y + 1) * nBoardWidth + (x - 1)]);
+                if (y > 0 && x < nBoardWidth - 1)
+                    if (!(arrNodes[y * nBoardWidth + (x + 1)].bObstacle || arrNodes[(y - 1) * nBoardWidth + x].bObstacle))
+                        arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y - 1) * nBoardWidth + (x + 1)]);
+                if (y < nBoardHeight - 1 && x < nBoardWidth - 1)
+                    if (!(arrNodes[y * nBoardWidth + (x + 1)].bObstacle || arrNodes[(y + 1) * nBoardWidth + x].bObstacle))
+                        arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y + 1) * nBoardWidth + (x + 1)]);
             }
 
         nodeStart = arrNodes[((int)transform.position.y - (int)v3GridStart.y) * nBoardWidth + (int)transform.position.x - (int)v3GridStart.x];
@@ -102,13 +104,7 @@ public class PlayerFollower : MonoBehaviour
             } else {
                 nStartIndex = Mathf.CeilToInt(transform.position.y - v3GridStart.y) * nBoardWidth + Mathf.CeilToInt(transform.position.x - v3GridStart.x);
             }
-            nodeStart = arrNodes[nStartIndex];
-            if (nodeStart.bObstacle)
-                nodeStart = arrNodes[nStartIndex - 1];
-
-            //ideal situation is to never have this statement happen
-            if (nodeStart.bObstacle)
-                Debug.Log("Start is an obstacle, possible unsafe behaviour");
+            nodeStart = arrNodes[(int)(transform.position.y - v3GridStart.y) * nBoardWidth + (int)(transform.position.x - v3GridStart.x)];
 
             SolveAStar();
 
