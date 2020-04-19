@@ -1,6 +1,4 @@
-﻿#define DEBUG
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +6,7 @@ public class GridSnapper : MonoBehaviour
 {
 
     public float fMoveSpeed;
-    public int nGridSize;
+    public float fGridSize;
     public Rigidbody2D rb;
     public LayerMask lmCollideWith;
 
@@ -31,14 +29,14 @@ public class GridSnapper : MonoBehaviour
         int nMoveY = (int)Input.GetAxisRaw("Vertical");
 
         if (Vector3.Distance(transform.position, v2GoToPos) <= 0.1f) {
-            if (!Physics2D.OverlapCircle(v2GoToPos + new Vector2(nMoveX * nGridSize, 0), 0.2f, lmCollideWith)) {
+            if (!Physics2D.OverlapCircle(v2GoToPos + new Vector2(nMoveX * fGridSize, 0), 0.2f, lmCollideWith)) {
                 if (Mathf.Abs(nMoveX) == 1) {
-                    v2GoToPos += new Vector2(nMoveX * nGridSize, 0);
+                    v2GoToPos += new Vector2(nMoveX * fGridSize, 0);
                 }
             }
-            if (!Physics2D.OverlapCircle(v2GoToPos + new Vector2(0, nMoveY * nGridSize), 0.2f, lmCollideWith)) {
+            if (!Physics2D.OverlapCircle(v2GoToPos + new Vector2(0, nMoveY * fGridSize), 0.2f, lmCollideWith)) {
                 if (Mathf.Abs(nMoveY) == 1) {
-                    v2GoToPos += new Vector2(0, nMoveY * nGridSize);
+                    v2GoToPos += new Vector2(0, nMoveY * fGridSize);
                 }
             }
         }
