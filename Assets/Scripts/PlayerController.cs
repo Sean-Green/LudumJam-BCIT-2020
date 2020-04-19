@@ -22,8 +22,12 @@ public class PlayerController : MonoBehaviour
             anim = GetComponentInChildren<Animator>();
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if (!canMove)
+        {
+            return;
+        }
         int nMoveX = (int)Input.GetAxisRaw("Horizontal");
         int nMoveY = (int)Input.GetAxisRaw("Vertical");
 

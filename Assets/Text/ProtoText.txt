@@ -1,3 +1,0 @@
-Hello Player,
-I am the prototype NPC
-This textbox is controlled by a prototype TextBoxController.

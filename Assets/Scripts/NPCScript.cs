@@ -13,21 +13,28 @@ public class NPCScript : MonoBehaviour
     // .txt with the next interaction
     public TextAsset repeated;
 
-    public bool introduced;
+    public bool playerNear, introduced;
 
-    // Really rough way to have the player interact with NPC's by colliding with them and hit space
-    // will need to be changed if we move to tile based movement.
-    // other issues include having to walk away from the NPC and collide again to trigger the text box more than once
-    private void OnCollisionStay2D(Collision2D other){
-        
-        if (Input.GetKeyDown("space"))
+
+    private void FixedUpdate()
+    {
+
+    }
+    public void OnTriggerEnter2D(Collider2D other)
+    {        
+        Debug.Log("entered trigger");
+        if(other.gameObject.layer == 10)
         {
-            if (!introduced){
-                textBox.EnableTextBox(intro);
-                introduced = true;
-            } else {
-                textBox.EnableTextBox(repeated);
-            }
+            playerNear = true;
         }
+    }
+    public void OnTriggerStay2D(Collider2D other)
+    {
+        Debug.Log("Within trigger");
+    }
+
+    public void OnTriggerExit2D(Collider2D other)
+    {
+        Debug.Log("Exit trigger");
     }
 }
