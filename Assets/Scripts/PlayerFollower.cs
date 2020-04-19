@@ -12,8 +12,8 @@ public class PlayerFollower : MonoBehaviour
     private Node[] arrNodes;
     private int nBoardWidth;
     private int nBoardHeight;
-
-    private Vector2Int v2ObstacleFinder;
+    private Grid grGrid;
+    private Vector3 v3GridStart;
 
     // Start is called before the first frame update
     void Start()
@@ -21,26 +21,29 @@ public class PlayerFollower : MonoBehaviour
         if (goPlayer == null)
             goPlayer = GameObject.FindGameObjectWithTag("Player");
 
+        if (grGrid == null)
+            grGrid = tmTiles.GetComponentInParent<Grid>();
+
         nBoardWidth = tmTiles.size.x;
         nBoardHeight = tmTiles.size.y;
-        v2ObstacleFinder = Vector2Int.zero;
+        Vector2Int v2ObstacleFinder = Vector2Int.zero;
+
+        v3GridStart = (grGrid.GetCellCenterWorld(grGrid.WorldToCell(grGrid.transform.position)));
+        Debug.Log(nBoardHeight + ", " + nBoardWidth);
 
         arrNodes = new Node[nBoardHeight * nBoardWidth];
-        for (int y = 0; y < nBoardHeight; y++) {
+        for (int y = 0; y < nBoardHeight; y++)
             for (int x = 0; x < nBoardWidth; x++) {
-                v2ObstacleFinder.x = x;
-                v2ObstacleFinder.y = y;
+                v2ObstacleFinder.x = x + (int)v3GridStart.x;
+                v2ObstacleFinder.y = y + (int)v3GridStart.y;
 
-                //can refactor to the constructor
                 arrNodes[y * nBoardWidth + x] = new Node {
-                    x = x,
-                    y = y,
+                    v2Pos = new Vector2(x + (int)v3GridStart.x, y + (int)v3GridStart.y),
                     bObstacle = Physics2D.OverlapCircle(v2ObstacleFinder, 0.2f, lmObstacles),
                     parent = null,
                     bVisited = false
                 };
             }
-        } 
     }
 
     // Update is called once per frame
@@ -50,8 +53,11 @@ public class PlayerFollower : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(new Vector3(v2ObstacleFinder.x, v2ObstacleFinder.y, 0), 0.5f);
+        for (int y = 0; y < nBoardHeight; y++)
+            for (int x = 0; x < nBoardWidth; x++) {
+                Gizmos.color = arrNodes[y * nBoardWidth + x].bObstacle ? Color.red : Color.blue;
+                Gizmos.DrawSphere(arrNodes[y * nBoardWidth + x].v2Pos, 0.2f);
+            }
     }
 
     class Node {
@@ -59,8 +65,7 @@ public class PlayerFollower : MonoBehaviour
         public bool bVisited;
         public float fGlobalGoal;
         public float fLocalGoal;
-        public int x;
-        public int y;
+        public Vector2 v2Pos;
         public List<Node> lNeigbours;
         public Node parent;
     }
