@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4243813270fa34da53f8c76567da44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bAllowSwap: 1
   fMoveSpeed: 6
   fGridSize: 1
   lmCollideWith:
@@ -159,7 +158,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cf65cf77d70726844968221c55ceea4d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 04d2b2bbe1ffe414ea65d4a4269308aa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
