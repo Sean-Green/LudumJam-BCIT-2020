@@ -31,7 +31,7 @@ public class GridSnapper : MonoBehaviour
         else if (nMoveY < 0)
             nMoveY /= -nMoveY;
 
-        if (Vector3.Distance(transform.position, v2GoToPos) <= 0.1f) {
+        if (Vector3.Distance(transform.position, v2GoToPos) == 0f) {
             if (!Physics2D.OverlapCircle(v2GoToPos + new Vector2(nMoveX * fGridSize, 0), 0.2f, lmCollideWith)) {
                 if (Mathf.Abs(nMoveX) == 1) {
                     v2GoToPos += new Vector2(nMoveX * fGridSize, 0);
