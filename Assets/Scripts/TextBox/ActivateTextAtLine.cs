@@ -49,7 +49,7 @@ public class ActivateTextAtLine : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "SimplerPlayer")
+        if (other.name == "SimplePlayer")
         {
             if (requireButtonPress)
             {
@@ -69,7 +69,7 @@ public class ActivateTextAtLine : MonoBehaviour
     }
     void OntriggerExit2D(Collider2D other)
     {
-        if (other.name == "SimplerPlayer")
+        if (other.name == "SimplePlayer")
         {
             waitForPress = false;
         }

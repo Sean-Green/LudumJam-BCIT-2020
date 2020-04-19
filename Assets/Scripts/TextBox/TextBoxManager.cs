@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TextBoxManager : MonoBehaviour
 {
-    public GameObject textPanel;
+    public GameObject panel;
     public Text textBoxInPanel;
     public TextAsset textFile;
     public string[] textLines;
@@ -54,7 +54,7 @@ public class TextBoxManager : MonoBehaviour
     }
     public void EnableTextBox()
     {
-        textPanel.SetActive(true);
+        panel.SetActive(true);
         isActive = true;
         if(stopPlayerMovement)
         {
@@ -64,7 +64,7 @@ public class TextBoxManager : MonoBehaviour
     public void DisableTextBox()
     {
         isActive = false;
-        textPanel.SetActive(false);
+        panel.SetActive(false);
         player.canMove = true;
     }
     public void ReloadScript(TextAsset newText)

@@ -1,6 +1,12 @@
-Hello Player, I am the prototype NPC
-Come and Speak with me.
+Hello Player, press x to advance this conversation.
+You have entered a Collison trigger!
+It makes me yell at you one time, then destroys itself.
+Come speak with me in the corner to learn more.
 
-This textbox is controlled by a prototype TextBoxController.
-This line left intentionally blank.
-JK, have a nice jam
+This textBox is called buy the ActivateTextAtLine Script
+If your scene has a TextBoxManager prefab, 
+you can attach the Activate text at line script to it
+And make it say whatever you want.
+
+This scene contains a TextBoxManager, press x
+if isActive is checked in the inpector the textBox will appear with a message at startup.
