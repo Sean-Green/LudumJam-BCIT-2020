@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class PlayerFollower : MonoBehaviour
-{
+public class PlayerFollower : MonoBehaviour {
     public GameObject goPlayer;
     public LayerMask lmObstacles;
     public Tilemap tmTiles;
@@ -63,10 +62,10 @@ public class PlayerFollower : MonoBehaviour
 
         for (int y = 0; y < nBoardHeight; y++)
             for (int x = 0; x < nBoardWidth; x++) {
-                if (y > 0)                  arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y - 1) * nBoardWidth + x]);
-                if (x > 0)                  arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[y * nBoardWidth + (x - 1)]);
-                if (x < nBoardWidth - 1)    arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[y * nBoardWidth + (x + 1)]);
-                if (y < nBoardHeight - 1)   arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y + 1) * nBoardWidth + x]);
+                if (y > 0) arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y - 1) * nBoardWidth + x]);
+                if (x > 0) arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[y * nBoardWidth + (x - 1)]);
+                if (x < nBoardWidth - 1) arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[y * nBoardWidth + (x + 1)]);
+                if (y < nBoardHeight - 1) arrNodes[y * nBoardWidth + x].lNeigbours.Add(arrNodes[(y + 1) * nBoardWidth + x]);
 
                 if (y > 0 && x > 0)
                     if (!(arrNodes[y * nBoardWidth + (x - 1)].bObstacle || arrNodes[(y - 1) * nBoardWidth + x].bObstacle))
@@ -89,14 +88,78 @@ public class PlayerFollower : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         //if the player has moved, update the entire algorithm
         //there's probably a more efficient way but w/e, this is good enough
-        if (goPlayer.transform.position.y != nodeEnd.v2Pos.y || goPlayer.transform.position.x != nodeEnd.v2Pos.x) {
+        if ((goPlayer.transform.position.y != nodeEnd.v2Pos.y || goPlayer.transform.position.x != nodeEnd.v2Pos.x)
+            && (transform.position.y == (int)transform.position.y && transform.position.x == (int)transform.position.x)) {
             nodeEnd = arrNodes[((int)goPlayer.transform.position.y - (int)v3GridStart.y) * nBoardWidth + (int)goPlayer.transform.position.x - (int)v3GridStart.x];
 
             nodeStart = arrNodes[(int)(transform.position.y - v3GridStart.y) * nBoardWidth + (int)(transform.position.x - v3GridStart.x)];
+
+            //end node adjustment
+            List<Node> listValidNeighbours = new List<Node>();
+            int nMySeed = 0;
+            //set our seed to be equal to our index in the goOtherFollowers List
+            for (int i = 0; i < goOtherFollowers.Length; i++) {
+                if (goOtherFollowers[i] == gameObject) {
+                    nMySeed = i;
+                    break;
+                }
+            }
+
+            //find the valid neighbours of our endpoint
+            //if our endpoint is the same as a neighbours
+            foreach (GameObject obj in goOtherFollowers) {
+                if (obj == gameObject)
+                    if (nodeEnd.v2Pos.x == (int)goPlayer.transform.position.x && nodeEnd.v2Pos.y == (int)goPlayer.transform.position.y)
+                        foreach (Node n in nodeEnd.lNeigbours)
+                            if (!n.bObstacle)
+                                listValidNeighbours.Add(n);
+
+                if (obj.GetComponent<PlayerFollower>().nodeEnd.v2Pos == nodeEnd.v2Pos) {
+                    foreach (Node n in nodeEnd.lNeigbours)
+                        if (!n.bObstacle)
+                            listValidNeighbours.Add(n);
+                    break;
+                }
+            }
+
+            //if our seed is greater than the length of our valid neighbours,
+            //backpedal down the list until we get enough things
+            if (listValidNeighbours.Count > 0) {
+                Debug.Log("Adding new neighbours");
+                //this entire loop assumes that there are free neighbours
+                //if there are none, it will be stuck forever
+                int nInsertionPoint = 0;
+                int nIterCount = 0;
+                do {
+                    int nAddingNodes = listValidNeighbours[nInsertionPoint].lNeigbours.Count;
+                    for (int i = 0; i < nAddingNodes; i++) {
+                        Node n = listValidNeighbours[nInsertionPoint].lNeigbours[i];
+                        if (!(n.bObstacle || SpaceIsPopulated(n.v2Pos))) {
+                            listValidNeighbours.Add(n);
+                        }
+                    }
+                    if (nInsertionPoint < listValidNeighbours.Count - 1)
+                        nInsertionPoint++;
+                    nIterCount++;
+
+                    //this prevents us from getting stuck in an infinite loop
+                    if (nInsertionPoint == listValidNeighbours.Count - 1 && nIterCount > nInsertionPoint) {
+                        for (int i = listValidNeighbours.Count - 1; i >= 0; i--) {
+                            foreach (Node n in listValidNeighbours[i].lNeigbours) {
+                                if (!n.bObstacle) {
+                                    listValidNeighbours.Add(n);
+                                    nMySeed++;
+                                }
+                            }
+                        }
+                    }
+                } while (listValidNeighbours.Count <= nMySeed);
+
+                nodeEnd = listValidNeighbours[nMySeed];
+            }
 
             SolveAStar();
 
@@ -109,48 +172,6 @@ public class PlayerFollower : MonoBehaviour
                 }
             }
 
-            //if we currently have a populated found path
-            if (lFoundPath.Count > 0) {
-                List<Node> listValidNeighbours = new List<Node>();
-                int nMySeed = 0;
-                //set our seed to be equal to our index in the goOtherFollowers List
-                for (int i = 0; i < goOtherFollowers.Length; i++) {
-                    if (goOtherFollowers[i] == gameObject) {
-                        nMySeed = i;
-                    }
-                }
-
-                //find the valid neighbours of our endpoint
-                //if our endpoint is the same as a neighbours
-                foreach (GameObject obj in goOtherFollowers) {
-                    if (obj == gameObject) continue;
-                    if (obj.GetComponent<PlayerFollower>().nodeEnd.v2Pos == nodeEnd.v2Pos) {
-                        foreach (Node n in nodeEnd.lNeigbours) {
-                            if (!n.bObstacle) {
-                                listValidNeighbours.Add(n);
-                            }
-                        }
-                        break;
-                    }
-                }
-                Debug.Log("Seed: " + nMySeed + ", Tiles: " + listValidNeighbours.Count);
-
-                //if our seed is greater than the length of our valid neighbours,
-                //backpedal down the list until we get enough things
-                while (listValidNeighbours.Count != 0 && listValidNeighbours.Count <= nMySeed) {
-                    Debug.Log("Not enough neighbours, finding more");
-                    if (lFoundPath.Count > 0) {
-                        lFoundPath.RemoveAt(0);
-                        foreach (Node n in lFoundPath[0].lNeigbours) {
-                            if (!n.bObstacle) listValidNeighbours.Add(n);
-                        }
-                    }
-                }
-
-                if (listValidNeighbours.Count > 0)
-                    lFoundPath[0] = listValidNeighbours[nMySeed];
-            }
-
             //our next position is equal to our starting position
             nCurrentIndex = lFoundPath.Count - 1;
             if (nCurrentIndex >= 0)
@@ -158,6 +179,22 @@ public class PlayerFollower : MonoBehaviour
         }
 
         MoveToNextSquare();
+    }
+
+    private bool SpaceIsPopulated(Vector2 pos) {
+        foreach (GameObject obj in goOtherFollowers) {
+            if (obj.GetComponent<PlayerFollower>().nodeEnd.v2Pos == pos)
+                return true;
+            else if (obj == gameObject)
+                break;
+        }
+
+        Debug.Log("Player x: " + (int)goPlayer.transform.position.x + " my x: " + pos.x + ", Player y: " + (int)goPlayer.transform.position.y + " my y: " + pos.y);
+
+        if ((int)goPlayer.transform.position.x == pos.x && (int)goPlayer.transform.position.y == pos.y)
+            return true;
+
+        return false;
     }
 
     private void MoveToNextSquare() {
@@ -168,8 +205,8 @@ public class PlayerFollower : MonoBehaviour
             }
         }
 
-        if (lFoundPath.Count > 0 && lFoundPath[nCurrentIndex] != nodeEnd) {
-            transform.position = Vector3.MoveTowards(transform.position, v2NextPosition, 5f * Time.deltaTime);
+        if (lFoundPath.Count > 0) {
+            transform.position = Vector3.MoveTowards(transform.position, v2NextPosition, 7.5f * Time.deltaTime);
         }
     }
 
