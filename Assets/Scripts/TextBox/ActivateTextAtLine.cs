@@ -67,7 +67,7 @@ public class ActivateTextAtLine : MonoBehaviour
             }
         }
     }
-    void OntriggerExit2D(Collider2D other)
+    void OnTriggerExit2D(Collider2D other)
     {
         if (other.name == "SimplePlayer")
         {

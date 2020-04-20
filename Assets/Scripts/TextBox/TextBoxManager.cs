@@ -15,10 +15,10 @@ public class TextBoxManager : MonoBehaviour
     public bool isActive;
     public bool stopPlayerMovement;
 
-    public PlayerController player;
+    public SimplePlayer player;
     void Start()
     {
-        player = FindObjectOfType<PlayerController>();
+        player = FindObjectOfType<SimplePlayer>();
         if (textFile != null){
             textLines = (textFile.text.Split('\n'));
         }
