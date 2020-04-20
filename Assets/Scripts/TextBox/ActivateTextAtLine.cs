@@ -40,16 +40,17 @@ public class ActivateTextAtLine : MonoBehaviour
             readyToEnable = true;
 
 
-            if (destroyWhenActivated)
-            {
-                Destroy(gameObject);
-            }
+            
         }
 
         if (readyToEnable && Input.GetKeyUp(KeyCode.X))
         {
             textBox.EnableTextBox();
             readyToEnable = false;
+            if (destroyWhenActivated)
+            {
+                Destroy(gameObject);
+            }
         }
         
         
