@@ -15,10 +15,10 @@ public class TextBoxManager : MonoBehaviour
     public bool isActive;
     public bool stopPlayerMovement;
 
-    public SimplePlayer player;
+    public PlayerController player;
     void Start()
     {
-        player = FindObjectOfType<SimplePlayer>();
+        player = FindObjectOfType<PlayerController>();
         if (textFile != null){
             textLines = (textFile.text.Split('\n'));
         }
@@ -66,6 +66,7 @@ public class TextBoxManager : MonoBehaviour
         isActive = false;
         panel.SetActive(false);
         player.canMove = true;
+        currentLine = 0;
     }
     public void ReloadScript(TextAsset newText)
     {

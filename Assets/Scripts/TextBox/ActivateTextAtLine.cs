@@ -7,13 +7,21 @@ public class ActivateTextAtLine : MonoBehaviour
     public TextAsset theText;
 
     public int startLine;
+
     public int endLine;
+
     public TextBoxManager textBox;
-    // Start is called before the first frame update
+    
     public bool destroyWhenActivated;
+
     public bool requireButtonPress;
+
+
+
     private bool waitForPress;
+
     private bool readyToEnable;
+
     void Start()
     {
         textBox = FindObjectOfType<TextBoxManager>();
@@ -32,16 +40,17 @@ public class ActivateTextAtLine : MonoBehaviour
             readyToEnable = true;
 
 
-            if (destroyWhenActivated)
-            {
-                Destroy(gameObject);
-            }
+            
         }
 
         if (readyToEnable && Input.GetKeyUp(KeyCode.X))
         {
             textBox.EnableTextBox();
             readyToEnable = false;
+            if (destroyWhenActivated)
+            {
+                Destroy(gameObject);
+            }
         }
         
         
@@ -49,7 +58,7 @@ public class ActivateTextAtLine : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "SimplePlayer")
+        if (other.name == "Player")
         {
             if (requireButtonPress)
             {
@@ -69,7 +78,7 @@ public class ActivateTextAtLine : MonoBehaviour
     }
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.name == "SimplePlayer")
+        if (other.name == "Player")
         {
             waitForPress = false;
         }

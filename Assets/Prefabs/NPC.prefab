@@ -94,8 +94,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theText: {fileID: 4900000, guid: fa0f902c13dbbc64d8a8e3f072c8a557, type: 3}
-  startLine: 5
-  endLine: 8
+  startLine: 0
+  endLine: 1
   textBox: {fileID: 0}
   destroyWhenActivated: 0
   requireButtonPress: 1
@@ -109,9 +109,9 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.6372843
