@@ -39,7 +39,6 @@ public class PlayerFollower : MonoBehaviour
 
         if (goOtherFollowers.Length == 0) {
             goOtherFollowers = GameObject.FindGameObjectsWithTag("Follower");
-            Debug.Log("Found other followers");
         }
 
         nBoardWidth = tmTiles.size.x;
@@ -97,13 +96,6 @@ public class PlayerFollower : MonoBehaviour
         if (goPlayer.transform.position.y != nodeEnd.v2Pos.y || goPlayer.transform.position.x != nodeEnd.v2Pos.x) {
             nodeEnd = arrNodes[((int)goPlayer.transform.position.y - (int)v3GridStart.y) * nBoardWidth + (int)goPlayer.transform.position.x - (int)v3GridStart.x];
 
-            //TODO: starting node needs some work to not be out of bounds, causes weird behaviour
-            int nStartIndex;
-            if (nodeStart.v2Pos.x < transform.position.x) {
-                nStartIndex = Mathf.FloorToInt(transform.position.y - v3GridStart.y) * nBoardWidth + Mathf.FloorToInt(transform.position.x - v3GridStart.x);
-            } else {
-                nStartIndex = Mathf.CeilToInt(transform.position.y - v3GridStart.y) * nBoardWidth + Mathf.CeilToInt(transform.position.x - v3GridStart.x);
-            }
             nodeStart = arrNodes[(int)(transform.position.y - v3GridStart.y) * nBoardWidth + (int)(transform.position.x - v3GridStart.x)];
 
             SolveAStar();
@@ -115,6 +107,45 @@ public class PlayerFollower : MonoBehaviour
                     lFoundPath.Add(p);
                     p = p.parent;
                 }
+            }
+
+            //if we currently have a populated found path
+            if (lFoundPath.Count > 0) {
+                List<Node> listValidNeighbours = new List<Node>();
+                int nMySeed = 0;
+                //set our seed to be equal to our index in the goOtherFollowers List
+                for (int i = 0; i < goOtherFollowers.Length; i++) {
+                    if (goOtherFollowers[i] == gameObject) {
+                        nMySeed = i;
+                    }
+                }
+
+                //find the valid neighbours of our endpoint
+                //if our endpoint is the same as a neighbours
+                foreach (GameObject obj in goOtherFollowers) {
+                    if (obj == gameObject) continue;
+                    if (obj.GetComponent<PlayerFollower>().nodeEnd.v2Pos == nodeEnd.v2Pos) {
+                        foreach (Node n in nodeEnd.lNeigbours) {
+                            if (!n.bObstacle) {
+                                listValidNeighbours.Add(n);
+                            }
+                        }
+                    }
+                }
+
+                //if our seed is greater than the length of our valid neighbours,
+                //backpedal down the list until we get enough things
+                while (listValidNeighbours.Count != 0 && listValidNeighbours.Count <= nMySeed) {
+                    if (lFoundPath.Count > 0) {
+                        lFoundPath.RemoveAt(0);
+                        foreach (Node n in lFoundPath[0].lNeigbours) {
+                            if (!n.bObstacle) listValidNeighbours.Add(n);
+                        }
+                    }
+                }
+
+                if (listValidNeighbours.Count > 0)
+                    lFoundPath[0] = listValidNeighbours[nMySeed];
             }
 
             //our next position is equal to our starting position
@@ -240,7 +271,7 @@ public class PlayerFollower : MonoBehaviour
     }
 #endif
 
-    class Node {
+    private class Node {
         public bool bObstacle = false;
         public bool bVisited = false;
         public float fGlobalGoal;

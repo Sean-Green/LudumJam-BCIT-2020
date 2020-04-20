@@ -31,7 +31,6 @@ public class GridSnapper : MonoBehaviour
         else if (nMoveY < 0)
             nMoveY /= -nMoveY;
 
-        //TODO: do not let diagonal movement happen if the edge piece is an obstacle
         if (Vector3.Distance(transform.position, v2GoToPos) == 0f) {
 
             if (Mathf.Abs(nMoveX) == 1 && Mathf.Abs(nMoveY) == 1)
