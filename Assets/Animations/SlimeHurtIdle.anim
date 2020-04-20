@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Goblin_Idle
+  m_Name: SlimeHurtIdle
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,18 +20,14 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 04d2b2bbe1ffe414ea65d4a4269308aa, type: 3}
-    - time: 0.125
-      value: {fileID: 21300002, guid: 04d2b2bbe1ffe414ea65d4a4269308aa, type: 3}
+      value: {fileID: 21300000, guid: eb6ba5d595f04294fa7dd4006561f935, type: 3}
     - time: 0.25
-      value: {fileID: 21300004, guid: 04d2b2bbe1ffe414ea65d4a4269308aa, type: 3}
-    - time: 0.375
-      value: {fileID: 21300006, guid: 04d2b2bbe1ffe414ea65d4a4269308aa, type: 3}
+      value: {fileID: 21300002, guid: eb6ba5d595f04294fa7dd4006561f935, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 8
+  m_SampleRate: 4
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -46,10 +42,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 04d2b2bbe1ffe414ea65d4a4269308aa, type: 3}
-    - {fileID: 21300002, guid: 04d2b2bbe1ffe414ea65d4a4269308aa, type: 3}
-    - {fileID: 21300004, guid: 04d2b2bbe1ffe414ea65d4a4269308aa, type: 3}
-    - {fileID: 21300006, guid: 04d2b2bbe1ffe414ea65d4a4269308aa, type: 3}
+    - {fileID: 21300000, guid: eb6ba5d595f04294fa7dd4006561f935, type: 3}
+    - {fileID: 21300002, guid: eb6ba5d595f04294fa7dd4006561f935, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
