@@ -1,4 +1,4 @@
-﻿#define USE_GIZMOS
+﻿//#define USE_GIZMOS
 
 using System.Collections;
 using System.Collections.Generic;
@@ -130,12 +130,15 @@ public class PlayerFollower : MonoBehaviour
                                 listValidNeighbours.Add(n);
                             }
                         }
+                        break;
                     }
                 }
+                Debug.Log("Seed: " + nMySeed + ", Tiles: " + listValidNeighbours.Count);
 
                 //if our seed is greater than the length of our valid neighbours,
                 //backpedal down the list until we get enough things
                 while (listValidNeighbours.Count != 0 && listValidNeighbours.Count <= nMySeed) {
+                    Debug.Log("Not enough neighbours, finding more");
                     if (lFoundPath.Count > 0) {
                         lFoundPath.RemoveAt(0);
                         foreach (Node n in lFoundPath[0].lNeigbours) {
