@@ -76,4 +76,25 @@ public class TextBoxManager : MonoBehaviour
             textLines = textLines = (newText.text.Split('\n'));
         }
     }
+    // pass in a .txt, the first and last line you want read from it, and the manager will display a textBox with that info.
+    public void Display(TextAsset newText, int start, int finish)
+    {
+        ReloadScript(newText);
+        currentLine = start;
+        endAtLine = finish;
+        EnableTextBox();
+    }
+    /* Pass in a .txt and we will display all of it in a text box.*/
+    public void Display(TextAsset newText)
+    {
+        Display(newText, 0, 0);
+    }
+    public void DisplayOneLine(string line)
+    {
+        textLines = new string[1];
+        textLines[1] = line;
+        currentLine = 0;
+        endAtLine = 1;
+        EnableTextBox();
+    }
 }
